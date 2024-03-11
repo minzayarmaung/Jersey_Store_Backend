@@ -1,0 +1,15 @@
+package com.mit.storesystem.Service.Invoice;
+
+import java.util.List;
+
+import com.mit.storesystem.Entity.Invoice;
+
+public interface InvoiceService {
+	
+	// Getting Invoice Data
+	public static List<Invoice> getAllInvoiceData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

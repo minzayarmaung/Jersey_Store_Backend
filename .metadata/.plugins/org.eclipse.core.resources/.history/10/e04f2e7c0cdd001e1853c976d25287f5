@@ -1,0 +1,33 @@
+package com.mit.storesystem.Controller.InvoiceController;
+
+import java.util.List;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.mit.storesystem.Entity.Invoice;
+import com.mit.storesystem.Service.Invoice.InvoiceService;
+
+@Path("/invoice")
+public class InvoiceApi {
+	
+	private final InvoiceService invoiceService;
+	
+	public InvoiceApi(InvoiceService invoiceService) {
+		super();
+		this.invoiceService = invoiceService;
+	}
+
+
+
+	// Getting All Invoice Data
+	@GET
+	@Path("getAllInvoiceData")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Invoice> getInvoiceData(){
+		return invoiceService.getAllInvoiceData();
+	}
+
+}

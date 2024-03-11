@@ -1,0 +1,8 @@
+INDEX VERSION 1.4+E:\Jersey Store System\Backend\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+1879183916.index
+375966464.index
+2689445553.index
+84762102.index
+1841610100.index
+729926986.index
+1717931740.index

@@ -1,0 +1,5 @@
+package com.mit.storesystem.Service.Invoice;
+
+public interface InvoiceService {
+
+}

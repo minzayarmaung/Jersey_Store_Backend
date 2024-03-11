@@ -1,0 +1,7 @@
+INDEX VERSION 1.134
+E:\Jersey Store System\Backend\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\84762102.index
+\storesystem\src\main\java
+E:\Jersey Store System\Backend\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1879183916.index
+\storesystem\src\main\java
+E:\Jersey Store System\Backend\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1148507717.index
+\StoreSystem\src\main\java

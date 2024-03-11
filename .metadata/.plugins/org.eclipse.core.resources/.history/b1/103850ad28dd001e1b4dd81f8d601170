@@ -1,0 +1,38 @@
+package com.mit.storesystem.Entity;
+
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "updateDataDTO")
+public class UpdateDataDTO {
+	
+	private Invoice updatedInvoice;
+	private List<Stock> updatedStocks;
+
+	public UpdateDataDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public UpdateDataDTO(Invoice updatedInvoice, List<Stock> updatedStocks) {
+		super();
+		this.updatedInvoice = updatedInvoice;
+		this.updatedStocks = updatedStocks;
+	}
+	
+	public Invoice getUpdatedInvoice() {
+		return updatedInvoice;
+	}
+	public void setUpdatedInvoice(Invoice updatedInvoice) {
+		this.updatedInvoice = updatedInvoice;
+	}
+	public List<Stock> getUpdatedStocks() {
+		return updatedStocks;
+	}
+	public void setUpdatedStocks(List<Stock> updatedStocks) {
+		this.updatedStocks = updatedStocks;
+	}
+	
+	
+
+}
