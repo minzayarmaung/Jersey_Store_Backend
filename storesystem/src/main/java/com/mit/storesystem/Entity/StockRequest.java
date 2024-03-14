@@ -2,7 +2,10 @@ package com.mit.storesystem.Entity;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 @XmlRootElement(name = "stockRequest")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StockRequest {
 	
 	private Long stockId;

@@ -1,8 +1,0 @@
-package com.mit.storesystem.Entity;
-
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "stockResponse")
-public class StockResponse {
-
-}

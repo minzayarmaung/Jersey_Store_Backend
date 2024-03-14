@@ -12,6 +12,7 @@ public class InvoiceRequest  {
 	private String time;
 	private String center;
 	private String status;
+	private String filePath;
 	
 	public InvoiceRequest() {
 		super();
@@ -71,5 +72,15 @@ public class InvoiceRequest  {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	
 	
 }

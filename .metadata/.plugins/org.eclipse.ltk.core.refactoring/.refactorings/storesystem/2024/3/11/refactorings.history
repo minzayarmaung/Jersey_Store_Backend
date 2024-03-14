@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;storesystem/src/main/java/com/mit/storesystem/Entity/Stock.java&apos; to &apos;StockRequest.java&apos;" description="Rename resource &apos;Stock.java&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/java/com/mit/storesystem/Entity/Stock.java" name="StockRequest.java" stamp="1710130477488" updateReferences="true"/>
-</session>

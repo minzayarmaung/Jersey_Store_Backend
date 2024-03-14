@@ -7,8 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+
 import com.mit.storesystem.Entity.InvoiceAndStockDataResponse;
 import com.mit.storesystem.Entity.InvoiceResponse;
+import com.mit.storesystem.Entity.StockRequest;
 import com.mit.storesystem.Utils.ConnectionDataSource;
 
 public class InvoiceService {
@@ -101,7 +104,7 @@ public class InvoiceService {
 		
 		try(Connection connection = ConnectionDataSource.getConnection();
 				PreparedStatement statement = connection.prepareStatement
-						("SELECT i.invoice_id AS invoice_Id, i.cashier_name AS cashierName, i.date AS date, i.time AS time, i.branch, i.center, i.status, s.stock_id AS stock_Id, s.name, s.amount, s.quantity, s.price FROM invoice i LEFT JOIN stock s ON i.invoice_id = s.invoice_id")) {
+						("SELECT i.invoice_id AS invoice_Id, i.cashier_name AS cashier_name, i.date AS date, i.time AS time, i.branch, i.center, i.status, s.stock_id AS stock_Id, s.name, s.amount, s.quantity, s.price FROM invoice i LEFT JOIN stock s ON i.invoice_id = s.invoice_id")) {
 			
 			ResultSet result = statement.executeQuery();
 			List<InvoiceAndStockDataResponse> list = new ArrayList<InvoiceAndStockDataResponse>();
@@ -109,7 +112,7 @@ public class InvoiceService {
 			while(result.next()) {
 				InvoiceAndStockDataResponse response = new InvoiceAndStockDataResponse();
 				response.setInvoiceId(result.getLong("invoice_Id"));
-				response.setCashierName(result.getString("stock_Id"));
+				response.setCashierName(result.getString("cashier_name"));
 				response.setDate(result.getString("date"));
 				response.setTime(result.getString("time"));
 				response.setBranch(result.getString("branch"));
@@ -119,6 +122,8 @@ public class InvoiceService {
 				response.setPrice(result.getFloat("price"));
 				response.setQuantity(result.getInt("quantity"));
 				response.setAmount(result.getFloat("amount"));
+				response.setStatus(result.getString("status"));
+			
 			
 				list.add(response);
 			}
@@ -155,5 +160,38 @@ public class InvoiceService {
 		return null;
 	}   
 	
-	
+	// Getting Invoice Data with Stock Details By ID 
+	public static InvoiceAndStockDataResponse getInvoiceAndStockDataById(long id) throws SQLException{
+		List<StockRequest> stockItems = new ArrayList<>();
+		InvoiceAndStockDataResponse response = null;
+		
+		try(Connection connection = ConnectionDataSource.getConnection();
+				PreparedStatement statement = connection.prepareStatement
+						("SELECT i.cashier_name, i.date, i.time, i.branch, i.center, s.name, s.price, s.quantity FROM invoice i JOIN stock s ON i.invoice_id = s.invoice_id WHERE i.invoice_id = ?")){
+		
+			statement.setLong(1, id);
+			ResultSet result = statement.executeQuery();
+			
+			while(result.next()) {
+				if(response == null) {
+					response = new InvoiceAndStockDataResponse();
+					response.setInvoiceId(id);
+					response.setCashierName(result.getString("cashier_name"));
+					response.setDate(result.getString("date"));
+					response.setTime(result.getString("time"));
+					response.setBranch(result.getString("branch"));
+					response.setCenter(result.getString("center"));
+					response.setStocks(new ArrayList<>());
+				}
+				
+				StockRequest stockRequest = new StockRequest();
+				stockRequest.setName(result.getString("name"));
+				stockRequest.setPrice(result.getFloat("price"));
+				stockRequest.setQuantity(result.getInt("quantity"));
+				
+				response.getStocks().add(stockRequest);
+			} 	
+		}
+		return response;
+	}
 }

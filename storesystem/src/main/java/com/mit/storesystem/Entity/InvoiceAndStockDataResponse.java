@@ -1,5 +1,7 @@
 package com.mit.storesystem.Entity;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "invoiceAndStockDataResponse")
@@ -17,14 +19,36 @@ public class InvoiceAndStockDataResponse {
 	private int quantity;
 	private float amount;
 	private String filePath;
+	private String status;
+	private List<StockRequest> stocks;
 	
 	public InvoiceAndStockDataResponse() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public InvoiceAndStockDataResponse(Long invoiceId, String cashierName, String date, String time, String branch,
+			String center, Long stockId, String name, float price, int quantity, float amount, String filePath,
+			String status, List<StockRequest> stocks) {
+		super();
+		this.invoiceId = invoiceId;
+		this.cashierName = cashierName;
+		this.date = date;
+		this.time = time;
+		this.branch = branch;
+		this.center = center;
+		this.stockId = stockId;
+		this.name = name;
+		this.price = price;
+		this.quantity = quantity;
+		this.amount = amount;
+		this.filePath = filePath;
+		this.status = status;
+		this.stocks = stocks;
+	}
 
 	public InvoiceAndStockDataResponse(Long invoiceId, String cashierName, String date, String time, String branch,
-			String center, Long stockId, String name, float price, int quantity, float amount , String filePath) {
+			String center, Long stockId, String name, float price, int quantity, float amount, String filePath) {
 		super();
 		this.invoiceId = invoiceId;
 		this.cashierName = cashierName;
@@ -39,7 +63,30 @@ public class InvoiceAndStockDataResponse {
 		this.amount = amount;
 		this.filePath = filePath;
 	}
-	
+
+
+
+	public InvoiceAndStockDataResponse(Long invoiceId, String cashierName, String date, String time, String branch,
+			String center, Long stockId, String name, float price, int quantity, float amount, String filePath,
+			String status) {
+		super();
+		this.invoiceId = invoiceId;
+		this.cashierName = cashierName;
+		this.date = date;
+		this.time = time;
+		this.branch = branch;
+		this.center = center;
+		this.stockId = stockId;
+		this.name = name;
+		this.price = price;
+		this.quantity = quantity;
+		this.amount = amount;
+		this.filePath = filePath;
+		this.status = status;
+	}
+
+
+
 	public Long getInvoiceId() {
 		return invoiceId;
 	}
@@ -104,7 +151,7 @@ public class InvoiceAndStockDataResponse {
 		return amount;
 	}
 	public void setAmount(float amount) {
-		this.amount = amount;
+		 this.amount = this.quantity * this.price;
 	}
 
 	public String getFilePath() {
@@ -112,7 +159,23 @@ public class InvoiceAndStockDataResponse {
 	}
 
 	public void setFilePath(String filePath) {
-		this.filePath = filePath;
+		this.filePath = filePath ;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public List<StockRequest> getStocks() {
+		return stocks;
+	}
+
+	public void setStocks(List<StockRequest> stocks) {
+		this.stocks = stocks;
 	}
 	
 	

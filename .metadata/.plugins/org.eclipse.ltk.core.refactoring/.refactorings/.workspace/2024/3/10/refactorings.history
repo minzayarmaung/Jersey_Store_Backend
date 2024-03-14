@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;StoreSystem&apos;" deleteContents="true" description="Delete resource &apos;StoreSystem&apos;" element1="/StoreSystem" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1709798976696"/>&#x0A;<refactoring comment="Delete resource &apos;storesystem/src/main/java/com/mit/storesystem/Service/Invoice&apos;" deleteContents="false" description="Delete resource &apos;storesystem/src/main/java/com/mit/storesystem/Service/Invoice&apos;" element1="/storesystem/src/main/java/com/mit/storesystem/Service/Invoice" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1709882341259"/>
-</session>

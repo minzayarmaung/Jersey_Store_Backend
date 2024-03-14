@@ -9,6 +9,12 @@
             <param-name>com.sun.jersey.config.property.packages</param-name>
             <param-value>com.mit.storesystem</param-value>
         </init-param>
+        
+     <init-param>
+	    <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+	    <param-value>com.mit.storesystem.Utils.CORSFilter</param-value>
+	</init-param>
+	
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>

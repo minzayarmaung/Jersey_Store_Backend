@@ -28,7 +28,7 @@ public class InvoiceAndStockDataRequest {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	public InvoiceAndStockDataRequest(Long invoiceId, String cashierName, String date, String time, String branch,
 			String center, Long stockId, String name, float price, int quantity, float amount, InputStream filePath,
 			FormDataContentDisposition contentDisposition) {
@@ -47,7 +47,6 @@ public class InvoiceAndStockDataRequest {
 		this.filePath = filePath;
 		this.contentDisposition = contentDisposition;
 	}
-
 
 
 	public Long getInvoiceId() {

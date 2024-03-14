@@ -5,12 +5,14 @@ package com.mit.storesystem.Controller.InvoiceController;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.print.attribute.standard.Media;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.mit.storesystem.Entity.InvoiceAndStockDataResponse;
 import com.mit.storesystem.Entity.InvoiceRequest;
@@ -55,6 +57,28 @@ public class InvoiceApi {
 	@Produces(MediaType.APPLICATION_JSON)
 	public InvoiceResponse softDeleteData(@PathParam("id") long id) {
 		return InvoiceService.softDelete(id);
+	}
+	// Get Invoice Data with Stock Details by ID
+	@GET
+	@Path("/getInvoiceWithStockDataById/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getInvoiceWithStockDataById(@PathParam("id") long id) {
+		
+		try {
+			InvoiceAndStockDataResponse response = InvoiceService.getInvoiceAndStockDataById(id);
+			if(response != null) {
+				
+				return Response.ok(response)
+						.build();		
+			}else {
+				 return Response.status(Response.Status.NOT_FOUND).entity("Invoice with ID " + id + " not found").build();
+            }
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to fetch invoice data").build();
+		}
+		
 	}
 	
 }
