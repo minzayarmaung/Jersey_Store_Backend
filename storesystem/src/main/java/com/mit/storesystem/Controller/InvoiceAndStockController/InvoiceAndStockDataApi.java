@@ -83,8 +83,8 @@ public class InvoiceAndStockDataApi {
     // Updating Invoice and Stock Data
     @PUT
     @Path("/updateInvoiceAndStockData/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateInvoiceAndStock(@PathParam("id") long id , InvoiceAndStocksDTOWithoutFiles dto) {
     	System.out.println("Received DTO : " + dto);
     	
@@ -94,8 +94,9 @@ public class InvoiceAndStockDataApi {
     	System.out.println("Controller - Invoice Data : " + dto.getInvoiceRequest());
     	System.out.println("Controller - Stock Data : " + dto.getStocks());
     	
-    	InvoiceAndStocksDTO invoice = dto.getInvoiceRequest();
-    	invoice.setInvoiceId(id);
+    	 // Check if the invoice request is not null
+    	dto.setInvoiceId(id);
+    	
     	List<StockRequest> stocks = dto.getStocks();
     	
     	 Response response = InvoiceAndStockService.updateInvoiceAndStockData(dto, stocks);

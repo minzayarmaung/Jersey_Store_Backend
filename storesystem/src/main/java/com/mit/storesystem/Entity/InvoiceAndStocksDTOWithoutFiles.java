@@ -20,17 +20,19 @@ public class InvoiceAndStocksDTOWithoutFiles {
 	private float amount;
 	private String status;
 	
+	
 	@JsonProperty("invoice")
-	private InvoiceAndStocksDTO invoiceRequest;
+	private InvoiceRequest invoiceRequest;
 	private List<StockRequest> stocks;
 	
 	public InvoiceAndStocksDTOWithoutFiles() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	public InvoiceAndStocksDTOWithoutFiles(Long invoiceId, String cashierName, String date, String time, String branch,
 			String center, Long stockId, String name, float price, int quantity, float amount, String status,
-			InvoiceAndStocksDTO invoiceRequest, List<StockRequest> stocks) {
+			InvoiceRequest invoiceRequest1, InvoiceRequest invoiceRequest, List<StockRequest> stocks) {
 		super();
 		this.invoiceId = invoiceId;
 		this.cashierName = cashierName;
@@ -47,6 +49,7 @@ public class InvoiceAndStocksDTOWithoutFiles {
 		this.invoiceRequest = invoiceRequest;
 		this.stocks = stocks;
 	}
+
 	public Long getInvoiceId() {
 		return invoiceId;
 	}
@@ -119,18 +122,22 @@ public class InvoiceAndStocksDTOWithoutFiles {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public InvoiceAndStocksDTO getInvoiceRequest() {
+
+	public InvoiceRequest getInvoiceRequest() {
 		return invoiceRequest;
 	}
-	public void setInvoiceRequest(InvoiceAndStocksDTO invoiceRequest) {
+
+	public void setInvoiceRequest(InvoiceRequest invoiceRequest) {
 		this.invoiceRequest = invoiceRequest;
 	}
+
 	public List<StockRequest> getStocks() {
 		return stocks;
 	}
 	public void setStocks(List<StockRequest> stocks) {
 		this.stocks = stocks;
 	}
+
 	
 	
 	

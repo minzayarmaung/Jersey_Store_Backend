@@ -12,7 +12,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
 
-//@XmlRootElement(name = "invoiceAndStocksDTO")
+@XmlRootElement(name = "invoiceAndStocksDTO")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InvoiceAndStocksDTO {
 

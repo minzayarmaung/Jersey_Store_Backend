@@ -85,7 +85,7 @@ public class InvoiceAndStockService {
 		System.out.println("Service - Stock Data : " + stocks.toString());
 		
 		//Update Invoice
-		InvoiceRequest existingInvoice = new InvoiceRequest();
+		InvoiceRequest existingInvoice = dto.getInvoiceRequest();
 		//existingInvoice.setInvoiceId(invoice.getInvoiceId());
 		existingInvoice.setCashierName(dto.getCashierName());
 		existingInvoice.setDate(dto.getDate());
@@ -95,7 +95,6 @@ public class InvoiceAndStockService {
 		
 		// Update Or Adding New Stock
 		for(StockRequest stock : stocks) {
-			if(stock.getStockId() <= 0) {
 				StockRequest newStock = new StockRequest();
 				newStock.setName(stock.getName());
 				newStock.setQuantity(stock.getQuantity());
@@ -103,26 +102,14 @@ public class InvoiceAndStockService {
 				newStock.setAmount(stock.getAmount());
 				newStock.setInvoice(existingInvoice);
 				
-				
+				if(stock.getStockId() <= 0) {
 				System.out.println("Adding New Stocks : " + newStock);
-				
 				saveStock(newStock);
-				
-				// Logic Method to Save Stock 
 			} else {
-				StockRequest existingStock = new StockRequest();
-				existingStock.setStockId(stock.getStockId());
-				existingStock.setName(stock.getName());
-				existingStock.setPrice(stock.getPrice());
-				existingStock.setQuantity(stock.getQuantity());
-				//existingStock.setAmount(stock.getAmount());
-				//existingStock.setStatus(stock.getStatus());
-				existingStock.setInvoice(existingInvoice);
-				
-				System.out.println("Updating Existing Stocks : " + existingStock);
-				
-				updateStock(existingStock);
-				
+				newStock.setStockId(stock.getStockId());
+				System.out.println("Updating stock with ID: " + newStock.getStockId());
+				System.out.println("Updating Existing Stocks :" + newStock);
+				updateStock(newStock);
 			}
 		}
 		
@@ -158,6 +145,13 @@ public class InvoiceAndStockService {
 				PreparedStatement statement = connection.prepareStatement
 						("UPDATE stock SET name = ?, quantity = ?, price = ? WHERE stock_id = ?")) {
 			
+			System.out.println("Executing SQL: UPDATE stock SET name = ?, quantity = ?, price = ? WHERE stock_id = ?");
+			System.out.println("Parameters: Name=" + 
+								existingStock.getName() + 
+								", Quantity=" + existingStock.getQuantity() + 
+								", Price=" + existingStock.getPrice() + 
+								", Stock ID=" + existingStock.getStockId());
+			
 	        statement.setString(1, existingStock.getName());
 	        statement.setInt(2, existingStock.getQuantity());
 	        statement.setFloat(3, existingStock.getPrice());
@@ -171,6 +165,9 @@ public class InvoiceAndStockService {
 	        }
 			
 		} catch (SQLException e) {
+			System.err.println("Update Failed : "+ e.getMessage());
+			System.err.println("SQL State : " + e.getSQLState());
+			System.err.println("Error Code: " + e.getErrorCode());
 			e.printStackTrace();
 		}
 	}
