@@ -14,13 +14,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.compress.utils.IOUtils;
+import org.apache.xmlbeans.impl.common.IOUtil;
+
 import com.mit.storesystem.Service.ImageService.ImageService;
 import com.sun.jersey.multipart.FormDataParam;
+import com.sun.jersey.multipart.FormDataBodyPart;
 
 @Path("images")
 public class ImageApi {
 	
 	private static String filePath = "E:\\Jersey Store System\\Backend\\storesystem\\src\\main\\resources\\images\\";
+	
+	private ImageService imageService  = new ImageService();
 	
 	// Getting Image
 	@GET
@@ -35,18 +41,14 @@ public class ImageApi {
 	@Path("/imageUpdate/{id}")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response updateImage(@PathParam("id") long id ,
-								byte[] imageData) {
-		try {
-			String fileName = "ProfileImage_" + id + ".jpg";
-			java.nio.file.Path imagePath = Paths.get(filePath + fileName);
-			Files.write(imagePath, imageData);
-			return Response.ok("Updated Successfully").build();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to Update Image").build();
+								@FormDataParam("profileImage") FormDataBodyPart filePath){
+		 try {
+		       	imageService.updateProfileImage(id, filePath);
+		        return Response.ok("Updated Successfully").build();
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to Update Image").build();
+		    }
 		}
-			
 	}
 
-}

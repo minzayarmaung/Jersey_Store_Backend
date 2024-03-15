@@ -3,10 +3,15 @@ package com.mit.storesystem.Service.ImageService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.ws.rs.core.Response;
+
+import org.apache.commons.compress.utils.IOUtils;
+
+import com.sun.jersey.multipart.FormDataBodyPart;
 
 public class ImageService {
 	
@@ -31,9 +36,12 @@ public class ImageService {
 	}
 	
 	// Updating Image
-	public void updateProfileImage(Long id , byte[] imageData) throws IOException {
+	public void updateProfileImage(Long id , FormDataBodyPart formData) throws IOException {
 		String fileName = "ProfileImage_" + id + ".jpg";
+		InputStream inputStream = formData.getValueAs(InputStream.class);
+		byte[] imageData = IOUtils.toByteArray(inputStream);
 		Path imagePath = Paths.get(filePath + fileName);
-		Files.write(imagePath, imageData);
+		Files.write(imagePath , imageData);
+		
 	}
 }
