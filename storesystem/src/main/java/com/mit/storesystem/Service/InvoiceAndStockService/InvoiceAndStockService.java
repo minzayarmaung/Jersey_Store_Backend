@@ -9,8 +9,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.ws.rs.core.Response;
 
 import com.mit.storesystem.Entity.InvoiceAndStocksDTO;
+import com.mit.storesystem.Entity.InvoiceAndStocksDTOWithoutFiles;
 import com.mit.storesystem.Entity.InvoiceRequest;
 import com.mit.storesystem.Entity.StockRequest;
 import com.mit.storesystem.Utils.ConnectionDataSource;
@@ -70,6 +74,106 @@ public class InvoiceAndStockService {
 	}
 	
 	// Updating Invoice and Stock Data
+	public static Response updateInvoiceAndStockData(InvoiceAndStocksDTOWithoutFiles dto, List<StockRequest> stocks) {
+		System.out.println("Service - Received Invoice ID for Update : " + dto.getInvoiceId());
+		
+		System.out.println("Received Stock IDs : "
+						+ stocks.stream().map(StockRequest::getStockId).collect(Collectors.toList()));
+		
+		System.out.println("Service - Invoice Data : " + dto.toString());
+		
+		System.out.println("Service - Stock Data : " + stocks.toString());
+		
+		//Update Invoice
+		InvoiceRequest existingInvoice = new InvoiceRequest();
+		//existingInvoice.setInvoiceId(invoice.getInvoiceId());
+		existingInvoice.setCashierName(dto.getCashierName());
+		existingInvoice.setDate(dto.getDate());
+		existingInvoice.setTime(dto.getTime());
+		existingInvoice.setBranch(dto.getBranch());
+		existingInvoice.setCenter(dto.getCenter());
+		
+		// Update Or Adding New Stock
+		for(StockRequest stock : stocks) {
+			if(stock.getStockId() <= 0) {
+				StockRequest newStock = new StockRequest();
+				newStock.setName(stock.getName());
+				newStock.setQuantity(stock.getQuantity());
+				newStock.setPrice(stock.getPrice());
+				newStock.setAmount(stock.getAmount());
+				newStock.setInvoice(existingInvoice);
+				
+				
+				System.out.println("Adding New Stocks : " + newStock);
+				
+				saveStock(newStock);
+				
+				// Logic Method to Save Stock 
+			} else {
+				StockRequest existingStock = new StockRequest();
+				existingStock.setStockId(stock.getStockId());
+				existingStock.setName(stock.getName());
+				existingStock.setPrice(stock.getPrice());
+				existingStock.setQuantity(stock.getQuantity());
+				//existingStock.setAmount(stock.getAmount());
+				//existingStock.setStatus(stock.getStatus());
+				existingStock.setInvoice(existingInvoice);
+				
+				System.out.println("Updating Existing Stocks : " + existingStock);
+				
+				updateStock(existingStock);
+				
+			}
+		}
+		
+		return Response.ok("Invoice and Stock Data Updated Successfully.").build();
+		
+	}
+	
+	public static void saveStock(StockRequest newStock) {
+		try(Connection connection = ConnectionDataSource.getConnection();
+				PreparedStatement statement = connection.prepareStatement
+						("INSERT INTO stock (name, quantity, price, amount, invoice_id) VALUES (?, ?, ?, ?, ?)")) {
+			
+			statement.setString(1, newStock.getName());
+			statement.setFloat(2, newStock.getPrice());
+			statement.setInt(3, newStock.getQuantity());
+			statement.setFloat(4, newStock.getAmount());
+			statement.setLong(5, newStock.getInvoice().getInvoiceId());
+			
+			int rowsInserted = statement.executeUpdate();
+			if (rowsInserted > 0) {
+	            System.out.println("New stock inserted successfully.");
+	        } else {
+	            System.out.println("Failed to insert new stock.");
+	        }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void updateStock(StockRequest existingStock) {
+		try(Connection connection = ConnectionDataSource.getConnection();
+				PreparedStatement statement = connection.prepareStatement
+						("UPDATE stock SET name = ?, quantity = ?, price = ? WHERE stock_id = ?")) {
+			
+	        statement.setString(1, existingStock.getName());
+	        statement.setInt(2, existingStock.getQuantity());
+	        statement.setFloat(3, existingStock.getPrice());
+	        statement.setLong(4, existingStock.getStockId());
+	        
+	        int rowsUpdated = statement.executeUpdate();
+	        if (rowsUpdated > 0) {
+	            System.out.println("Stock updated successfully.");
+	        } else {
+	            System.out.println("Failed to update stock.");
+	        }
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 }
 	

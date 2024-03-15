@@ -1,21 +1,12 @@
 package com.mit.storesystem.Entity;
 
-import java.io.InputStream;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.sun.jersey.core.header.FormDataContentDisposition;
-
-//@XmlRootElement(name = "invoiceAndStocksDTO")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class InvoiceAndStocksDTO {
-
+public class InvoiceAndStocksDTOWithoutFiles {
 	private Long invoiceId;
 	private String cashierName;
 	private String date;
@@ -33,20 +24,13 @@ public class InvoiceAndStocksDTO {
 	private InvoiceAndStocksDTO invoiceRequest;
 	private List<StockRequest> stocks;
 	
-	// For Image Uploading 
-	private InputStream filePath;
-	private FormDataContentDisposition contentDisposition;
-	
-	public InvoiceAndStocksDTO() {
+	public InvoiceAndStocksDTOWithoutFiles() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	public InvoiceAndStocksDTO(Long invoiceId, String cashierName, String date, String time, String branch,
+	public InvoiceAndStocksDTOWithoutFiles(Long invoiceId, String cashierName, String date, String time, String branch,
 			String center, Long stockId, String name, float price, int quantity, float amount, String status,
-			InvoiceAndStocksDTO invoiceRequest, List<StockRequest> stocks, InputStream filePath,
-			FormDataContentDisposition contentDisposition) {
-		
+			InvoiceAndStocksDTO invoiceRequest, List<StockRequest> stocks) {
 		super();
 		this.invoiceId = invoiceId;
 		this.cashierName = cashierName;
@@ -62,28 +46,84 @@ public class InvoiceAndStocksDTO {
 		this.status = status;
 		this.invoiceRequest = invoiceRequest;
 		this.stocks = stocks;
-		this.filePath = filePath;
-		this.contentDisposition = contentDisposition;
 	}
-
-	
-	public void setInvoiceId(Long invoiceId) {
-		this.invoiceId = invoiceId;
-	}
-
 	public Long getInvoiceId() {
 		return invoiceId;
 	}
-	@JsonProperty("invoice")
-	public void setInvoice(InvoiceAndStocksDTO invoiceRequest) {
-	    this.invoiceRequest = invoiceRequest;
+	public void setInvoiceId(Long invoiceId) {
+		this.invoiceId = invoiceId;
 	}
-
-	public InvoiceAndStocksDTO getInvoice() {
+	public String getCashierName() {
+		return cashierName;
+	}
+	public void setCashierName(String cashierName) {
+		this.cashierName = cashierName;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
+	public String getBranch() {
+		return branch;
+	}
+	public void setBranch(String branch) {
+		this.branch = branch;
+	}
+	public String getCenter() {
+		return center;
+	}
+	public void setCenter(String center) {
+		this.center = center;
+	}
+	public Long getStockId() {
+		return stockId;
+	}
+	public void setStockId(Long stockId) {
+		this.stockId = stockId;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public float getPrice() {
+		return price;
+	}
+	public void setPrice(float price) {
+		this.price = price;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	public float getAmount() {
+		return amount;
+	}
+	public void setAmount(float amount) {
+		this.amount = amount;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public InvoiceAndStocksDTO getInvoiceRequest() {
 		return invoiceRequest;
 	}
-	public void setInvoice(InvoiceRequest invoice) {
-		this.invoiceId = invoiceId;
+	public void setInvoiceRequest(InvoiceAndStocksDTO invoiceRequest) {
+		this.invoiceRequest = invoiceRequest;
 	}
 	public List<StockRequest> getStocks() {
 		return stocks;
@@ -91,115 +131,6 @@ public class InvoiceAndStocksDTO {
 	public void setStocks(List<StockRequest> stocks) {
 		this.stocks = stocks;
 	}
-	public InputStream getFilePath() {
-		return filePath;
-	}
-	public void setFilePath(InputStream filePath) {
-		this.filePath = filePath;
-	}
-	public FormDataContentDisposition getContentDisposition() {
-		return contentDisposition;
-	}
-	public void setContentDisposition(FormDataContentDisposition contentDisposition) {
-		this.contentDisposition = contentDisposition;
-	}
-
-	public String getCashierName() {
-		return cashierName;
-	}
-
-	public void setCashierName(String cashierName) {
-		this.cashierName = cashierName;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public String getTime() {
-		return time;
-	}
-
-	public void setTime(String time) {
-		this.time = time;
-	}
-
-	public String getBranch() {
-		return branch;
-	}
-
-	public void setBranch(String branch) {
-		this.branch = branch;
-	}
-
-	public String getCenter() {
-		return center;
-	}
-
-	public void setCenter(String center) {
-		this.center = center;
-	}
-
-	public Long getStockId() {
-		return stockId;
-	}
-
-	public void setStockId(Long stockId) {
-		this.stockId = stockId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public float getPrice() {
-		return price;
-	}
-
-	public void setPrice(float price) {
-		this.price = price;
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
-	public float getAmount() {
-		return amount;
-	}
-
-	public void setAmount(float amount) {
-		this.amount = amount;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public InvoiceAndStocksDTO getInvoiceRequest() {
-		return invoiceRequest;
-	}
-
-	public void setInvoiceRequest(InvoiceAndStocksDTO invoiceRequest) {
-		this.invoiceRequest = invoiceRequest;
-	}
-
 	
 	
 	

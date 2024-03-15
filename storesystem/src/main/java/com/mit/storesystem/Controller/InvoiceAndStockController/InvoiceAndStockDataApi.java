@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -18,6 +19,9 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.mit.storesystem.Entity.InvoiceAndStocksDTO;
+import com.mit.storesystem.Entity.InvoiceAndStocksDTOWithoutFiles;
+import com.mit.storesystem.Entity.InvoiceRequest;
+import com.mit.storesystem.Entity.StockRequest;
 import com.mit.storesystem.Service.InvoiceAndStockService.InvoiceAndStockService;
 import com.sun.jersey.multipart.FormDataParam;
 import com.sun.jersey.core.header.FormDataContentDisposition;
@@ -77,13 +81,26 @@ public class InvoiceAndStockDataApi {
     }
     
     // Updating Invoice and Stock Data
-    
     @PUT
     @Path("/updateInvoiceAndStockData/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateInvoiceAndStockData(@PathParam("id") long id , InvoiceAndStocksDTO dto) {
-		return null;
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateInvoiceAndStock(@PathParam("id") long id , InvoiceAndStocksDTOWithoutFiles dto) {
+    	System.out.println("Received DTO : " + dto);
+    	
+    	dto.getStocks().forEach(stock -> System.out.println("DTO Stock ID " + stock.getStockId()));
+    	
+    	System.out.println("Controller - Updating Invoice Data : " + id);
+    	System.out.println("Controller - Invoice Data : " + dto.getInvoiceRequest());
+    	System.out.println("Controller - Stock Data : " + dto.getStocks());
+    	
+    	InvoiceAndStocksDTO invoice = dto.getInvoiceRequest();
+    	invoice.setInvoiceId(id);
+    	List<StockRequest> stocks = dto.getStocks();
+    	
+    	 Response response = InvoiceAndStockService.updateInvoiceAndStockData(dto, stocks);
+    	    
+    	 return response;
     	
     }
 }
