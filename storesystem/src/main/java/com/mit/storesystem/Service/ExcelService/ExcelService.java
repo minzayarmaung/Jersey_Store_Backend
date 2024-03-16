@@ -8,6 +8,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.mit.storesystem.Entity.ExportDTO;
 
 public class ExcelService {
+	
+	// Export Excel 
     public static Workbook exportExcelData(List<ExportDTO> invoiceData, List<ExportDTO> stockData) {
         Workbook workbook = new XSSFWorkbook();
         
@@ -56,4 +58,8 @@ public class ExcelService {
         row.createCell(8).setCellValue(data.getStockQuantity());
         row.createCell(9).setCellValue(data.getAmount());
     }
+    
+    // Import Excel Service
+    
+    
 }

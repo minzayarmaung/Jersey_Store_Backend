@@ -10,11 +10,32 @@ import java.util.List;
 import javax.ws.rs.core.Response;
 
 import com.mit.storesystem.Entity.InvoiceAndStockDataResponse;
+import com.mit.storesystem.Entity.InvoiceRequest;
 import com.mit.storesystem.Entity.InvoiceResponse;
 import com.mit.storesystem.Entity.StockRequest;
 import com.mit.storesystem.Utils.ConnectionDataSource;
 
 public class InvoiceService {
+	
+	// Saving Invoice Data
+	public static void saveInvoiceData(InvoiceRequest invoiceRequest) {
+		try(Connection connection = ConnectionDataSource.getConnection();
+				PreparedStatement statement  = connection.prepareStatement
+						("INSERT INTO invoice (invoice_Id, cashier_name, [date], [time], branch, center) VALUES (?, ?, ?, ?, ?, ?)") ) {
+			
+			statement.setLong(1, invoiceRequest.getInvoiceId());
+			statement.setString(2, invoiceRequest.getCashierName());
+			statement.setString(3, invoiceRequest.getDate());
+			statement.setString(4, invoiceRequest.getTime());
+			statement.setString(5, invoiceRequest.getBranch());
+			statement.setString(6, invoiceRequest.getCenter());
+			
+			statement.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	// Getting All Invoice Data 
 	public static List<InvoiceResponse> getAllInvoiceData() throws SQLException{
