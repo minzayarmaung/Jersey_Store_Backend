@@ -30,6 +30,7 @@ public class InvoiceRequest  {
 		this.center = center;
 		this.status = status;
 	}
+	
 	public Long getInvoiceId() {
 		return invoiceId;
 	}

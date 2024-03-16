@@ -22,13 +22,6 @@ import com.mit.storesystem.Utils.ConnectionDataSource;
 @Path("excel")
 public class ExportExcelDataApi {
 	
-//	private ExcelService excelService;
-//	
-//	public ExportExcelDataApi(ExcelService excelService) {
-//		this.excelService = excelService;
-//	}
-
-
 	@GET
 	@Path("/exportFile")
 	@Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")

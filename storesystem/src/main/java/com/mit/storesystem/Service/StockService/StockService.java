@@ -3,15 +3,67 @@ package com.mit.storesystem.Service.StockService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mit.storesystem.Entity.InvoiceResponse;
+import com.mit.storesystem.Entity.StockRequest;
 import com.mit.storesystem.Entity.StockResponse;
 import com.mit.storesystem.Entity.StockUpdate;
 import com.mit.storesystem.Utils.ConnectionDataSource;
 
 public class StockService {
+	
+	// Saving Stock Data 
+	public static void saveStockData(List<StockRequest> stockRequests) throws Exception {
+        try (Connection connection = ConnectionDataSource.getConnection()) {
+        	connection.setAutoCommit(false);
+        
+        	 try {
+                 for (StockRequest stockRequest : stockRequests) {
+                     if (!invoiceExists(stockRequest.getInvoiceRequest().getInvoiceId(), connection)) {
+                         throw new SQLException("Invoice with ID " + stockRequest.getInvoiceRequest().getInvoiceId() + " does not exist.");
+                     }
+                     saveStock(stockRequest, connection);
+                 }
+                 connection.commit(); // Commit transaction
+             } catch (Exception e) {
+                 connection.rollback(); // Rollback transaction
+                 throw e; // Rethrow exception to be handled by API class
+             }
+         }
+     }
+	
+		private static boolean invoiceExists(Long invoiceId, Connection connection) throws SQLException {
+	        String checkQuery = "SELECT COUNT(*) FROM invoice WHERE invoice_id = ?";
+	        try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
+	            checkStmt.setLong(1, invoiceId);
+	            ResultSet rs = checkStmt.executeQuery();
+	            return rs.next() && rs.getInt(1) > 0;
+        }
+    }
+
+    private static void saveStock(StockRequest stockRequest, Connection connection) throws Exception {
+        try (PreparedStatement statement = connection.prepareStatement(
+                "INSERT INTO stock (name, price, quantity, amount, invoice_id) VALUES (?, ?, ?, ?, ?)")) {
+
+            statement.setString(1, stockRequest.getName());
+            statement.setFloat(2, stockRequest.getPrice());
+            statement.setInt(3, stockRequest.getQuantity());
+            statement.setFloat(4, stockRequest.getAmount());
+            
+            Long invoiceId = stockRequest.getInvoiceRequest().getInvoiceId();	
+            
+            if(invoiceId == null) {
+            	throw new IllegalArgumentException("Invoice Id is NULL..");
+            }
+            statement.setLong(5, invoiceId);
+           
+
+            statement.executeUpdate();
+        }
+    }
 	
 	// Getting All Stock Data
 	public static List<StockResponse> getAllStockData() {
@@ -145,6 +197,4 @@ public class StockService {
 		}
 		return null;
 	}
-	
-
 }

@@ -25,7 +25,7 @@ import com.mit.storesystem.Service.InvoiceService.InvoiceService;
 @Path("/invoice")
 public class InvoiceApi {
 	
-	// Saving Invoie Data
+	// Saving Invoice Data
 	@POST
 	@Path("/saveInvoiceData")
 	@Consumes(MediaType.APPLICATION_JSON)
