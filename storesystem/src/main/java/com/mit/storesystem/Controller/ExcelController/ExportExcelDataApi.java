@@ -52,59 +52,48 @@ public class ExportExcelDataApi {
 		
 	}
 
-		private List<ExportDTO> fetchInvoiceData() {
-			List<ExportDTO> invoiceData = new ArrayList<>();
-			
-			try(Connection connection = ConnectionDataSource.getConnection();
-					PreparedStatement statement = connection.prepareStatement
-							("select invoice_id , cashier_name, date , time , branch , center from invoice")){
-				
-				ResultSet result = statement.executeQuery();
-				
-				while(result.next()) {
-					ExportDTO dto = new ExportDTO();
-					dto.setInvoiceId(result.getLong("invoice_id"));
-					dto.setCashierName(result.getString("cashier_name"));
-					dto.setDate(result.getString("date"));
-					dto.setTime(result.getString("time"));
-					dto.setBranch(result.getString("branch"));
-					dto.setCenter(result.getString("center"));
-					
-					invoiceData.add(dto);
-				}
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			return invoiceData;
-		}
-	
-	
-		private List<ExportDTO> fetchStockData() {
-			List<ExportDTO> stockData = new ArrayList<>();
-			
-			try(Connection connection = ConnectionDataSource.getConnection();
-					PreparedStatement statement = connection.prepareStatement
-							("select name , price , quantity , amount from stock")){
-				
-				ResultSet result = statement.executeQuery();
-				
-				while(result.next()) {
-					ExportDTO dto = new ExportDTO();
-					dto.setStockName(result.getString("name"));
-					dto.setStockPrice(result.getFloat("price"));
-					dto.setStockQuantity(result.getInt("quantity"));
-					dto.setAmount(result.getFloat("amount"));
-					
-					stockData.add(dto);
-				}
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			return stockData;
-		}
-		
+	private List<ExportDTO> fetchInvoiceData() {
+	    List<ExportDTO> invoiceData = new ArrayList<>();
+	    try (Connection connection = ConnectionDataSource.getConnection();
+	         PreparedStatement statement = connection.prepareStatement(
+	                 "SELECT invoice_id, cashier_name, date, time, branch, center FROM invoice")) {
+	        ResultSet result = statement.executeQuery();
+	        while (result.next()) {
+	            ExportDTO dto = new ExportDTO();
+	            dto.setInvoiceId(result.getLong("invoice_id"));
+	            dto.setCashierName(result.getString("cashier_name"));
+	            dto.setDate(result.getString("date"));
+	            dto.setTime(result.getString("time"));
+	            dto.setBranch(result.getString("branch"));
+	            dto.setCenter(result.getString("center"));
+	            invoiceData.add(dto);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return invoiceData;
+	}
+
+	private List<ExportDTO> fetchStockData() {
+	    List<ExportDTO> stockData = new ArrayList<>();
+	    try (Connection connection = ConnectionDataSource.getConnection();
+	         PreparedStatement statement = connection.prepareStatement(
+	        		 "SELECT stock.invoice_id, stock.name AS stock_name, stock.price, stock.quantity, stock.amount, invoice.center FROM stock " +
+	                         "INNER JOIN invoice ON stock.invoice_id = invoice.invoice_id")) {
+	        ResultSet result = statement.executeQuery();
+	        while (result.next()) {
+	            ExportDTO dto = new ExportDTO();
+	            dto.setInvoiceId(result.getLong("invoice_id"));
+	            dto.setStockName(result.getString("stock_name"));
+	            dto.setStockPrice(result.getFloat("price"));
+	            dto.setStockQuantity(result.getInt("quantity"));
+	            dto.setAmount(result.getFloat("amount"));
+	            dto.setCenter(result.getString("center"));
+	            stockData.add(dto);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return stockData;
+	}
 }

@@ -10,34 +10,29 @@ import com.mit.storesystem.Entity.ExportDTO;
 public class ExcelService {
 	
 	// Export Excel 
-    public static Workbook exportExcelData(List<ExportDTO> invoiceData, List<ExportDTO> stockData) {
-        Workbook workbook = new XSSFWorkbook();
-        
-        Sheet invoiceSheet = workbook.createSheet("InvoiceTable");
-        Sheet stockSheet = workbook.createSheet("StockTable");
-        
-        String[] invoiceHeaders = {"Invoice ID", "Cashier Name", "Date", "Time", "Branch", "Center" ,
-        		"Stock Name", "Price", "Quantity", "Amount" };
-        
-        createHeaderRow(invoiceSheet, invoiceHeaders);
-        
-        int rowNum = 1;
-        for (ExportDTO data : invoiceData) {
-            Row row = invoiceSheet.createRow(rowNum++);
-            populateRowWithExportDTO(row, data);
-        }
-        
-        String[] stockHeaders = {"Stock Name", "Price", "Quantity", "Amount"};
-        createHeaderRow(stockSheet, stockHeaders);
-        
-        rowNum = 1;
-        for (ExportDTO data : stockData) {
-            Row row = stockSheet.createRow(rowNum++);
-            populateRowWithExportDTO(row, data);
-        }
-        
-        return workbook;
-    }
+	public static Workbook exportExcelData(List<ExportDTO> invoiceData, List<ExportDTO> stockData) {
+	    Workbook workbook = new XSSFWorkbook();
+	    
+	    Sheet sheet = workbook.createSheet("CombinedData");
+	    
+	    String[] headers = {"Invoice ID", "Cashier Name", "Date", "Time", "Branch", "Center",
+	            "Stock Name", "Price", "Quantity", "Amount"};
+
+	    createHeaderRow(sheet, headers);
+
+	    int rowNum = 1;
+	    for (ExportDTO data : invoiceData) {
+	        Row row = sheet.createRow(rowNum++);
+	        populateRowWithExportDTO(row, data);
+	    }
+
+	    for (ExportDTO data : stockData) {
+	        Row row = sheet.createRow(rowNum++);
+	        populateRowWithExportDTO(row, data);
+	    }
+
+	    return workbook;
+	}
 
     private static void createHeaderRow(Sheet sheet, String[] headers) {
         Row headerRow = sheet.createRow(0);
@@ -47,7 +42,12 @@ public class ExcelService {
     }
     private static void populateRowWithExportDTO(Row row, ExportDTO data) {
     	
+    	if(data.getInvoiceId() != null) {
     	row.createCell(0).setCellValue(data.getInvoiceId());
+    	} else {
+    		row.createCell(0).setCellValue("");
+    	}
+    	
         row.createCell(1).setCellValue(data.getCashierName());
         row.createCell(2).setCellValue(data.getDate());
         row.createCell(3).setCellValue(data.getTime());
@@ -57,8 +57,6 @@ public class ExcelService {
         row.createCell(7).setCellValue(data.getStockPrice());
         row.createCell(8).setCellValue(data.getStockQuantity());
         row.createCell(9).setCellValue(data.getAmount());
-    }
-    
-    
+    } 
     
 }
