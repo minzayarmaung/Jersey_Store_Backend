@@ -188,7 +188,7 @@ public class InvoiceService {
 		
 		try(Connection connection = ConnectionDataSource.getConnection();
 				PreparedStatement statement = connection.prepareStatement
-						("SELECT i.cashier_name, i.date, i.time, i.branch, i.center, s.name, s.price, s.quantity FROM invoice i JOIN stock s ON i.invoice_id = s.invoice_id WHERE i.invoice_id = ?")){
+						("SELECT i.cashier_name, i.date, i.time, i.branch, i.center,s.stock_id , s.name, s.price, s.quantity, s.status FROM invoice i JOIN stock s ON i.invoice_id = s.invoice_id WHERE i.invoice_id = ?")){
 		
 			statement.setLong(1, id);
 			ResultSet result = statement.executeQuery();
@@ -206,9 +206,11 @@ public class InvoiceService {
 				}
 				
 				StockRequest stockRequest = new StockRequest();
+				stockRequest.setStockId(result.getLong("stock_id"));
 				stockRequest.setName(result.getString("name"));
 				stockRequest.setPrice(result.getFloat("price"));
 				stockRequest.setQuantity(result.getInt("quantity"));
+				stockRequest.setStatus(result.getString("status"));
 				
 				response.getStocks().add(stockRequest);
 			} 	

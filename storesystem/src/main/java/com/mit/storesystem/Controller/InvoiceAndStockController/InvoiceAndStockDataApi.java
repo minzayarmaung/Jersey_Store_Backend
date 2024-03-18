@@ -99,7 +99,7 @@ public class InvoiceAndStockDataApi {
     	
     	List<StockRequest> stocks = dto.getStocks();
     	
-    	 Response response = InvoiceAndStockService.updateInvoiceAndStockData(dto, stocks);
+    	 Response response = InvoiceAndStockService.updateInvoiceAndStockData(id ,dto, stocks);
     	    
     	 return response;
     	

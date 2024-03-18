@@ -2,12 +2,17 @@ package com.mit.storesystem.Entity;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+@XmlRootElement(name = "invoiceAndStockData")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InvoiceAndStocksDTOWithoutFiles {
 	private Long invoiceId;
+	
+
 	private String cashierName;
 	private String date;
 	private String time;
@@ -23,6 +28,7 @@ public class InvoiceAndStocksDTOWithoutFiles {
 	
 	@JsonProperty("invoice")
 	private InvoiceRequest invoiceRequest;
+
 	private List<StockRequest> stocks;
 	
 	public InvoiceAndStocksDTOWithoutFiles() {
@@ -46,7 +52,7 @@ public class InvoiceAndStocksDTOWithoutFiles {
 		this.quantity = quantity;
 		this.amount = amount;
 		this.status = status;
-		this.invoiceRequest = invoiceRequest;
+		this.invoiceRequest = invoiceRequest; 
 		this.stocks = stocks;
 	}
 
@@ -137,8 +143,5 @@ public class InvoiceAndStocksDTOWithoutFiles {
 	public void setStocks(List<StockRequest> stocks) {
 		this.stocks = stocks;
 	}
-
-	
-	
 	
 }

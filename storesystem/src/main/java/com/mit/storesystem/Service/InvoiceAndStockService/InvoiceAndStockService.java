@@ -13,10 +13,12 @@ import java.util.stream.Collectors;
 
 import javax.ws.rs.core.Response;
 
+import com.mit.storesystem.Entity.InvoiceAndStockDataRequest;
 import com.mit.storesystem.Entity.InvoiceAndStocksDTO;
 import com.mit.storesystem.Entity.InvoiceAndStocksDTOWithoutFiles;
 import com.mit.storesystem.Entity.InvoiceRequest;
 import com.mit.storesystem.Entity.StockRequest;
+import com.mit.storesystem.Entity.UpdateDataDTO;
 import com.mit.storesystem.Utils.ConnectionDataSource;
 
 public class InvoiceAndStockService {
@@ -74,7 +76,7 @@ public class InvoiceAndStockService {
 	}
 	
 	// Updating Invoice and Stock Data
-	public static Response updateInvoiceAndStockData(InvoiceAndStocksDTOWithoutFiles dto, List<StockRequest> stocks) {
+	public static Response updateInvoiceAndStockData(long id ,InvoiceAndStocksDTOWithoutFiles dto, List<StockRequest> stocks) {
 		System.out.println("Service - Received Invoice ID for Update : " + dto.getInvoiceId());
 		
 		System.out.println("Received Stock IDs : "
@@ -84,14 +86,15 @@ public class InvoiceAndStockService {
 		
 		System.out.println("Service - Stock Data : " + stocks.toString());
 		
+		Long invoiceId = id;
+		System.out.println("Service - Invoice ID : " +  invoiceId);
+		
 		//Update Invoice
 		InvoiceRequest existingInvoice = dto.getInvoiceRequest();
-		//existingInvoice.setInvoiceId(invoice.getInvoiceId());
-		existingInvoice.setCashierName(dto.getCashierName());
-		existingInvoice.setDate(dto.getDate());
-		existingInvoice.setTime(dto.getTime());
-		existingInvoice.setBranch(dto.getBranch());
-		existingInvoice.setCenter(dto.getCenter());
+		
+		System.out.println("Invoice Data: " + existingInvoice.toString());
+		
+		updateInvoice(invoiceId, existingInvoice);
 		
 		// Update Or Adding New Stock
 		for(StockRequest stock : stocks) {
@@ -104,7 +107,7 @@ public class InvoiceAndStockService {
 				
 				if(stock.getStockId() <= 0) {
 				System.out.println("Adding New Stocks : " + newStock);
-				saveStock(newStock);
+				saveStock(id ,newStock);
 			} else {
 				newStock.setStockId(stock.getStockId());
 				System.out.println("Updating stock with ID: " + newStock.getStockId());
@@ -117,16 +120,17 @@ public class InvoiceAndStockService {
 		
 	}
 	
-	public static void saveStock(StockRequest newStock) {
+	public static void saveStock(long id ,StockRequest newStock) {
 		try(Connection connection = ConnectionDataSource.getConnection();
 				PreparedStatement statement = connection.prepareStatement
 						("INSERT INTO stock (name, quantity, price, amount, invoice_id) VALUES (?, ?, ?, ?, ?)")) {
+			Long invoiceId = id;
 			
 			statement.setString(1, newStock.getName());
 			statement.setFloat(2, newStock.getPrice());
 			statement.setInt(3, newStock.getQuantity());
 			statement.setFloat(4, newStock.getAmount());
-			statement.setLong(5, newStock.getInvoice().getInvoiceId());
+			statement.setLong(5, invoiceId);
 			
 			int rowsInserted = statement.executeUpdate();
 			if (rowsInserted > 0) {
@@ -169,6 +173,44 @@ public class InvoiceAndStockService {
 			System.err.println("SQL State : " + e.getSQLState());
 			System.err.println("Error Code: " + e.getErrorCode());
 			e.printStackTrace();
+		}
+	}
+	
+		public static void updateInvoice(Long id , InvoiceRequest existingInvoice) {
+		
+		try(Connection connection = ConnectionDataSource.getConnection();
+				PreparedStatement statement = connection.prepareStatement
+						("UPDATE invoice SET cashier_name = ?, date = ?, time = ?, branch = ?, center = ? WHERE invoice_id = ?");) {
+			
+		System.out.println("Preparing to update invoice with ID: " + id + 
+	                  ", Cashier Name: " + existingInvoice.getCashierName() + 
+	                  ", Date: " + existingInvoice.getDate() + 
+	                  ", Time: " + existingInvoice.getTime() +
+	                  ", Branch: " + existingInvoice.getBranch() + 
+	                  ", Center: " + existingInvoice.getCenter());
+
+			
+			statement.setString(1, existingInvoice.getCashierName());
+			statement.setString(2, existingInvoice.getDate());
+			statement.setString(3, existingInvoice.getTime());
+			statement.setString(4, existingInvoice.getBranch());
+			statement.setString(5, existingInvoice.getCenter());
+			statement.setLong(6, id);
+			
+			int rowsAffected = statement.executeUpdate();
+			
+			if (rowsAffected > 0) {
+	            System.out.println("Invoice updated successfully.");
+	        } else {
+	            System.out.println("Failed to update invoice.");
+	        }
+			
+			
+		} catch (SQLException e) {
+			System.err.println("Invoice update failed: " + e.getMessage());
+	        System.err.println("SQL State: " + e.getSQLState());
+	        System.err.println("Error Code: " + e.getErrorCode());
+	        e.printStackTrace();
 		}
 	}
 	

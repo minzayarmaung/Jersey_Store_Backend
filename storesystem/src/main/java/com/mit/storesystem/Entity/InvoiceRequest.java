@@ -2,7 +2,11 @@ package com.mit.storesystem.Entity;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 @XmlRootElement(name = "invoiceRequest")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class InvoiceRequest  {
 	
 	private Long invoiceId;
