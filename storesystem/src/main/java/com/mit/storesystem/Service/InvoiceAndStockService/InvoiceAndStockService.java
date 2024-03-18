@@ -54,13 +54,17 @@ public class InvoiceAndStockService {
 			}
 		}
 		
-		String stockInsertQuery = "INSERT INTO stock (invoice_id, name, price, quantity) VALUES (?, ?, ?, ?)";
+		String stockInsertQuery = "INSERT INTO stock (invoice_id, name, price, quantity , amount) VALUES (?, ?, ?, ? , ?)";
 		for(StockRequest stock : stocks) {
 			try(PreparedStatement stockStatement = connection.prepareStatement(stockInsertQuery)){
+				
+				Float amount = stock.getQuantity() * stock.getPrice();
+				
 				stockStatement.setLong(1, invoice.getInvoiceId());
 				stockStatement.setString(2, stock.getName());
 				stockStatement.setFloat(3, stock.getPrice());
 				stockStatement.setInt(4, stock.getQuantity());
+				stockStatement.setFloat(5, amount);
 				
 				int stockAffectedRows = stockStatement.executeUpdate();
 				if(stockAffectedRows == 0) {

@@ -10,7 +10,7 @@ import com.mit.storesystem.Entity.ExportDTO;
 public class ExcelService {
 	
 	// Export Excel 
-	public static Workbook exportExcelData(List<ExportDTO> invoiceData, List<ExportDTO> stockData) {
+	public static Workbook exportExcelData(List<ExportDTO> invoiceAndStockData) {
 	    Workbook workbook = new XSSFWorkbook();
 	    
 	    Sheet sheet = workbook.createSheet("CombinedData");
@@ -21,12 +21,7 @@ public class ExcelService {
 	    createHeaderRow(sheet, headers);
 
 	    int rowNum = 1;
-	    for (ExportDTO data : invoiceData) {
-	        Row row = sheet.createRow(rowNum++);
-	        populateRowWithExportDTO(row, data);
-	    }
-
-	    for (ExportDTO data : stockData) {
+	    for (ExportDTO data : invoiceAndStockData) {
 	        Row row = sheet.createRow(rowNum++);
 	        populateRowWithExportDTO(row, data);
 	    }
@@ -41,7 +36,7 @@ public class ExcelService {
         }
     }
     private static void populateRowWithExportDTO(Row row, ExportDTO data) {
-    	
+    		
     	if(data.getInvoiceId() != null) {
     	row.createCell(0).setCellValue(data.getInvoiceId());
     	} else {

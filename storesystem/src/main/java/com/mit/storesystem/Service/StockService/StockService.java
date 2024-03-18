@@ -153,10 +153,13 @@ public class StockService {
 						PreparedStatement statement = connection.prepareStatement
 								("UPDATE stock SET name = ? , price = ? , quantity = ? , amount = ? WHERE stock_id = ?")
 						) {
+					
+					Float amount = stockUpdate.getPrice() * stockUpdate.getQuantity();
+					
 					statement.setString(1, stockUpdate.getName());
 					statement.setFloat(2, stockUpdate.getPrice());
 					statement.setInt(3,stockUpdate.getQuantity());
-					statement.setFloat(4, stockUpdate.getAmount());
+					statement.setFloat(4, amount);
 					statement.setLong(5, id);
 					
 				int result = statement.executeUpdate();
@@ -166,7 +169,7 @@ public class StockService {
 					response.setName(stockUpdate.getName());
 					response.setPrice(stockUpdate.getPrice());
 					response.setQuantity(stockUpdate.getQuantity());
-					response.setAmount(stockUpdate.getAmount());
+					response.setAmount(amount);
 					return response;
 				}
 			

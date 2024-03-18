@@ -21,7 +21,7 @@ public class InvoiceService {
 	public static void saveInvoiceData(InvoiceRequest invoiceRequest) {
 		try(Connection connection = ConnectionDataSource.getConnection();
 				PreparedStatement statement  = connection.prepareStatement
-						("INSERT INTO invoice (invoice_Id, cashier_name, [date], [time], branch, center) VALUES (?, ?, ?, ?, ?, ?)") ) {
+						("INSERT INTO invoice (invoice_Id, cashier_name, date, time, branch, center) VALUES (?, ?, ?, ?, ?, ?)") ) {
 			
 			statement.setLong(1, invoiceRequest.getInvoiceId());
 			statement.setString(2, invoiceRequest.getCashierName());
@@ -34,6 +34,7 @@ public class InvoiceService {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 		}
 	}
 	

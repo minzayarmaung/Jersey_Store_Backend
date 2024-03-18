@@ -42,6 +42,8 @@ public class importExcelService {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} finally {
+				 stockRequests = new ArrayList<>(); 
 			}
 
 		}
@@ -58,7 +60,9 @@ public class importExcelService {
 			invoiceRequest.setDate(getStringCellValue(row.getCell(2)));
 			invoiceRequest.setTime(getStringCellValue(row.getCell(3)));
 			invoiceRequest.setBranch(getStringCellValue(row.getCell(4)));
-			invoiceRequest.setCenter(getStringCellValue(row.getCell(5)));
+			invoiceRequest.setCenter(getStringCellValue(row.getCell(5))); 
+			
+			System.out.println("Set Time :" + row.getCell(3));
 			
 			return invoiceRequest;
 	}

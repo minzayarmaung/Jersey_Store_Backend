@@ -28,10 +28,9 @@ public class ExportExcelDataApi {
 	public Response exportExcelFie() {
 		
 		try {
-			List<ExportDTO> invoiceData = fetchInvoiceData();
-			List<ExportDTO> stockData = fetchStockData();
+			List<ExportDTO> bothData = fetchInvoiceAndStockData();
 			
-			Workbook workbook = ExcelService.exportExcelData(invoiceData, stockData);
+			Workbook workbook = ExcelService.exportExcelData(bothData);
 			
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			workbook.write(outputStream);
@@ -52,37 +51,26 @@ public class ExportExcelDataApi {
 		
 	}
 
-	private List<ExportDTO> fetchInvoiceData() {
-	    List<ExportDTO> invoiceData = new ArrayList<>();
+	private List<ExportDTO> fetchInvoiceAndStockData() {
+	    List<ExportDTO> stockData = new ArrayList<>();
 	    try (Connection connection = ConnectionDataSource.getConnection();
 	         PreparedStatement statement = connection.prepareStatement(
-	                 "SELECT invoice_id, cashier_name, date, time, branch, center FROM invoice")) {
+	        		 
+	                 "SELECT i.cashier_name, i.date, i.time, i.branch, s.invoice_id, s.name AS stock_name, s.price, s.quantity, s.amount, i.center " 
+	                 + "FROM stock s " 
+	                 +"INNER JOIN invoice i ON s.invoice_id = i.invoice_id " 
+	                 +"WHERE i.status = 'active'"
+	        				
+	        		 )) {
+	    	
 	        ResultSet result = statement.executeQuery();
 	        while (result.next()) {
 	            ExportDTO dto = new ExportDTO();
-	            dto.setInvoiceId(result.getLong("invoice_id"));
 	            dto.setCashierName(result.getString("cashier_name"));
 	            dto.setDate(result.getString("date"));
 	            dto.setTime(result.getString("time"));
 	            dto.setBranch(result.getString("branch"));
 	            dto.setCenter(result.getString("center"));
-	            invoiceData.add(dto);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return invoiceData;
-	}
-
-	private List<ExportDTO> fetchStockData() {
-	    List<ExportDTO> stockData = new ArrayList<>();
-	    try (Connection connection = ConnectionDataSource.getConnection();
-	         PreparedStatement statement = connection.prepareStatement(
-	        		 "SELECT stock.invoice_id, stock.name AS stock_name, stock.price, stock.quantity, stock.amount, invoice.center FROM stock " +
-	                         "INNER JOIN invoice ON stock.invoice_id = invoice.invoice_id")) {
-	        ResultSet result = statement.executeQuery();
-	        while (result.next()) {
-	            ExportDTO dto = new ExportDTO();
 	            dto.setInvoiceId(result.getLong("invoice_id"));
 	            dto.setStockName(result.getString("stock_name"));
 	            dto.setStockPrice(result.getFloat("price"));
