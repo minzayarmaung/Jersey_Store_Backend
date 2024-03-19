@@ -128,21 +128,5 @@ public class importExcelService {
 		    }
 		    return (long) cell.getNumericCellValue();
 		}
-		
-		private Time getTimeCellValue(Cell cell) {
-		    if (cell.getCellType() == CellType.STRING) {
-		        String timeString = cell.getStringCellValue();
-		        try {	    
-		            Date date = (Date) new SimpleDateFormat("hh:mm a").parse(timeString);		           
-		            String formattedTime = new SimpleDateFormat("HH:mm:ss").format(date);
-		            return Time.valueOf(formattedTime);
-		        } catch (ParseException e) {
-		            e.printStackTrace();
-		            throw new IllegalArgumentException("Unable to parse the time string: " + timeString);
-		        }
-		    } else {
-		        throw new IllegalArgumentException("Cell type is not a string for time conversion.");
-		    }
-		}
 
 }

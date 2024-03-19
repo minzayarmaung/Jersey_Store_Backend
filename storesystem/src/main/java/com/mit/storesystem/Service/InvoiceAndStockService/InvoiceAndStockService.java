@@ -58,7 +58,7 @@ public class InvoiceAndStockService {
 		for(StockRequest stock : stocks) {
 			try(PreparedStatement stockStatement = connection.prepareStatement(stockInsertQuery)){
 				
-				Float amount = stock.getQuantity() * stock.getPrice();
+				Float amount = stock.getQuantity() * stock.getPrice(); 
 				
 				stockStatement.setLong(1, invoice.getInvoiceId());
 				stockStatement.setString(2, stock.getName());
