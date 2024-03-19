@@ -2,12 +2,19 @@ package com.mit.storesystem.Service.ExcelService;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Date;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 
+import javax.sql.rowset.RowSetWarning;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -58,11 +65,15 @@ public class importExcelService {
 			invoiceRequest.setInvoiceId(getLongCellValue(row.getCell(0)));
 			invoiceRequest.setCashierName(getStringCellValue(row.getCell(1)));
 			invoiceRequest.setDate(getStringCellValue(row.getCell(2)));
-			invoiceRequest.setTime(getStringCellValue(row.getCell(3)));
-			invoiceRequest.setBranch(getStringCellValue(row.getCell(4)));
-			invoiceRequest.setCenter(getStringCellValue(row.getCell(5))); 
 			
-			System.out.println("Set Time :" + row.getCell(3));
+			Time time = new Time(row.getCell(3).getDateCellValue().getTime());
+			String formattedTime = formatTime(time);
+			invoiceRequest.setTime(getTimeCellValue(String.valueOf(formattedTime)));
+			
+			invoiceRequest.setBranch(getStringCellValue(row.getCell(4)));
+			invoiceRequest.setCenter(getStringCellValue(row.getCell(5)));  
+			
+			System.out.println("Time : " + time);
 			
 			return invoiceRequest;
 	}
@@ -97,11 +108,41 @@ public class importExcelService {
 			return stockRequest;
 			
 	}
+		
+		private String getTimeCellValue(String cell) {
+			return String.valueOf(cell);
+	}
+		private String formatTime(Time time) {
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm a");
+			return sdf.format(time);
+		}
+		
+		
 		private String getStringCellValue(Cell cell) {
 			return cell.getCellType() == CellType.STRING ? cell.getStringCellValue() : null;
 	}
+		
 		private Long getLongCellValue(Cell cell) {
-			 return cell.getCellType() == CellType.NUMERIC ? (long) cell.getNumericCellValue() : null; 
-	}
+		    if (cell == null || cell.getCellType() != CellType.NUMERIC) {
+		        return null; 
+		    }
+		    return (long) cell.getNumericCellValue();
+		}
+		
+		private Time getTimeCellValue(Cell cell) {
+		    if (cell.getCellType() == CellType.STRING) {
+		        String timeString = cell.getStringCellValue();
+		        try {	    
+		            Date date = (Date) new SimpleDateFormat("hh:mm a").parse(timeString);		           
+		            String formattedTime = new SimpleDateFormat("HH:mm:ss").format(date);
+		            return Time.valueOf(formattedTime);
+		        } catch (ParseException e) {
+		            e.printStackTrace();
+		            throw new IllegalArgumentException("Unable to parse the time string: " + timeString);
+		        }
+		    } else {
+		        throw new IllegalArgumentException("Cell type is not a string for time conversion.");
+		    }
+		}
 
 }
