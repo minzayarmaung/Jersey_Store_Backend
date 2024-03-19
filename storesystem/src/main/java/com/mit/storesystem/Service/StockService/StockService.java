@@ -155,6 +155,7 @@ public class StockService {
 						) {
 					
 					Float amount = stockUpdate.getPrice() * stockUpdate.getQuantity();
+					System.out.println(amount);
 					
 					statement.setString(1, stockUpdate.getName());
 					statement.setFloat(2, stockUpdate.getPrice());

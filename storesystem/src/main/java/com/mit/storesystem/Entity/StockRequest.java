@@ -72,7 +72,7 @@ public class StockRequest {
 		return amount;
 	}
 	public void setAmount(float amount) {
-		this.amount = amount;
+		 this.amount = this.quantity * this.price;
 	}
 	public String getStatus() {
 		return status;

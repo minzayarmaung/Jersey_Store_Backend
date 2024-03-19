@@ -75,7 +75,7 @@ public class StockApi {
 		return StockService.softDelete(id);
 	}
 	
-	// Updating Stock Data
+	// Updating Stock Data By Id
 	@PUT
 	@Path("/updateStockData/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
