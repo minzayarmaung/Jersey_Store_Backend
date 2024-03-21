@@ -94,6 +94,28 @@ public class InvoiceService {
 		return null;	
 	}
 	
+	// Getting All Invoice Ids From the Database to check Validation
+	public static List<Long> getAllInvoiceIdsFromDatabase(){
+		List<Long> list = new ArrayList<>();
+		
+		try(Connection connection = ConnectionDataSource.getConnection();
+				PreparedStatement statement = connection.prepareStatement
+						("SELECT invoice_id from invoice")) {
+			
+			ResultSet result = statement.executeQuery();
+			
+			while(result.next()) {
+				long invoiceIds = result.getLong("invoice_id");
+				list.add(invoiceIds);
+			}
+			return list;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	// Getting Available Invoice Ids
 	public static List<InvoiceResponse> getAvailableInvoiceIds() {
 		

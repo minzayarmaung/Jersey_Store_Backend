@@ -1,5 +1,7 @@
 package com.mit.storesystem.Service.ExcelService;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -11,6 +13,9 @@ public class ExcelService {
 	
 	// Export Excel 
 	public static Workbook exportExcelData(List<ExportDTO> invoiceAndStockData) {
+		
+		Collections.sort(invoiceAndStockData, Comparator.comparing(ExportDTO::getInvoiceId));
+		
 	    Workbook workbook = new XSSFWorkbook();
 	    
 	    Sheet sheet = workbook.createSheet("CombinedData");

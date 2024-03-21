@@ -39,6 +39,12 @@ public class importExcelService {
 			}
 			
 			InvoiceRequest invoiceRequest = readInvoice(row);
+			
+			if(InvoiceService.getAllInvoiceIdsFromDatabase().contains(invoiceRequest.getInvoiceId())) {
+				System.out.println("Skipping Data with Invoice ID : " + invoiceRequest.getInvoiceId());
+				continue;
+			}
+			
 			StockRequest stockRequest = readStock(row , invoiceRequest);
 			
 			InvoiceService.saveInvoiceData(invoiceRequest);

@@ -63,6 +63,13 @@ public class InvoiceApi {
 	public List<InvoiceResponse> getAvailableInvoiceIds(){
 		return (List<InvoiceResponse>) InvoiceService.getAvailableInvoiceIds(); 
 	}
+	// Getting All Invoice IDs from the Database
+	@GET
+	@Path("/getAllInvoiceIdsfromDatabase")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Long> getAllInvoiceIdsfromDatabase(){
+		return InvoiceService.getAllInvoiceIdsFromDatabase();
+	}
 	// Getting Invoice Data with Stock Details
 	@GET
 	@Path("/getInvoiceWithStockDetails")
