@@ -9,7 +9,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.mit.storesystem.Entity.ExportDTO;
 import com.mit.storesystem.Entity.InvoiceAndStockDataResponse;
+import com.mit.storesystem.Entity.InvoiceRequest;
 import com.mit.storesystem.Entity.PaginationResponse;
+import com.mit.storesystem.Entity.StockRequest;
 
 public class ExcelService {
 	
@@ -43,7 +45,7 @@ public class ExcelService {
         }
     }
     private static void populateRowWithExportDTO(Row row, InvoiceAndStockDataResponse data) {
-    		
+
     	if(data.getInvoiceId() != null) {
     	row.createCell(0).setCellValue(data.getInvoiceId());
     	} else {
@@ -52,13 +54,16 @@ public class ExcelService {
     	
         row.createCell(1).setCellValue(data.getCashierName());
         row.createCell(2).setCellValue(data.getDate());
-        row.createCell(3).setCellValue(data.getTime());
+        row.createCell(3).setCellValue(data.getTime()); 
         row.createCell(4).setCellValue(data.getBranch());
         row.createCell(5).setCellValue(data.getCenter());
         row.createCell(6).setCellValue(data.getName());
         row.createCell(7).setCellValue(data.getPrice());
         row.createCell(8).setCellValue(data.getQuantity());
         row.createCell(9).setCellValue(data.getAmount());
+        
+        System.out.println("Price :" + data.getPrice());
+        System.out.println("Quantity :" + data.getQuantity());
+        System.out.println("Amount :" + data.getAmount());
     } 
-    
 }

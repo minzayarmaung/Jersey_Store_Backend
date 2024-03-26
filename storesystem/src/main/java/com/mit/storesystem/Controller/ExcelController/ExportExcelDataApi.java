@@ -74,7 +74,7 @@ public class ExportExcelDataApi {
 	    	
 	    			statement.setInt(1, startIndex);
 	    			statement.setInt(2, limit );
-	    			 return PaginationService.findWithPager(startIndex, limit, searchValue);
+	    			return PaginationService.findWithPager(startIndex, limit, searchValue);
 	        }
 	}
 		

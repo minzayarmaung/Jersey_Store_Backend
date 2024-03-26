@@ -29,6 +29,8 @@ public class PaginationService {
 				response.setCenter(result.getString("center"));
 				response.setStockId(result.getLong("stock_id"));
 				response.setName(result.getString("name"));
+				response.setPrice(result.getFloat("price"));
+				response.setQuantity(result.getInt("quantity"));
 				response.setAmount(result.getFloat("amount"));
 				
 				list.add(response);

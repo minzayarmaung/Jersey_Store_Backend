@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 @XmlRootElement(name = "invoiceAndStockDataResponse")
 public class InvoiceAndStockDataResponse {
 	
@@ -106,7 +108,7 @@ public class InvoiceAndStockDataResponse {
 		this.date = date;
 	}
 	public String getTime() {
-		return time;
+		return time; 
 	}
 	public void setTime(String time) {
 		this.time = time;
@@ -151,7 +153,7 @@ public class InvoiceAndStockDataResponse {
 		return amount;
 	}
 	public void setAmount(float amount) {
-		 this.amount = this.quantity * this.price;
+		 this.amount = amount;
 	}
 
 	public String getFilePath() {

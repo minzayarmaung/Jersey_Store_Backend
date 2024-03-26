@@ -93,6 +93,7 @@ public class InvoiceAndStockService {
 		Long invoiceId = id;
 		System.out.println("Service - Invoice ID : " +  invoiceId);
 		
+		
 		//Update Invoice
 		InvoiceRequest existingInvoice = dto.getInvoiceRequest();
 		
@@ -106,7 +107,7 @@ public class InvoiceAndStockService {
 				newStock.setName(stock.getName());
 				newStock.setQuantity(stock.getQuantity());
 				newStock.setPrice(stock.getPrice());
-				newStock.setAmount(stock.getAmount());
+				newStock.setAmount(stock.getPrice() * stock.getQuantity());
 				newStock.setInvoice(existingInvoice);
 				
 				if(stock.getStockId() <= 0) {
@@ -130,10 +131,14 @@ public class InvoiceAndStockService {
 						("INSERT INTO stock (name, quantity, price, amount, invoice_id) VALUES (?, ?, ?, ?, ?)")) {
 			Long invoiceId = id;
 			
+			Float price = newStock.getPrice();
+			int Quantity = newStock.getQuantity();
+			Float amount = price * Quantity;
+			
 			statement.setString(1, newStock.getName());
 			statement.setFloat(2, newStock.getPrice());
 			statement.setInt(3, newStock.getQuantity());
-			statement.setFloat(4, newStock.getAmount());
+			statement.setFloat(4, amount);
 			statement.setLong(5, invoiceId);
 			
 			int rowsInserted = statement.executeUpdate();
@@ -151,9 +156,9 @@ public class InvoiceAndStockService {
 	public static void updateStock(StockRequest existingStock) {
 		try(Connection connection = ConnectionDataSource.getConnection();
 				PreparedStatement statement = connection.prepareStatement
-						("UPDATE stock SET name = ?, quantity = ?, price = ? WHERE stock_id = ?")) {
+						("UPDATE stock SET name = ?, quantity = ?, price = ? , amount = ? WHERE stock_id = ?")) {
 			
-			System.out.println("Executing SQL: UPDATE stock SET name = ?, quantity = ?, price = ? WHERE stock_id = ?");
+			System.out.println("Executing SQL: UPDATE stock SET name = ?, quantity = ?, price = ? , amount = ? WHERE stock_id = ?");
 			System.out.println("Parameters: Name=" + 
 								existingStock.getName() + 
 								", Quantity=" + existingStock.getQuantity() + 
@@ -163,7 +168,8 @@ public class InvoiceAndStockService {
 	        statement.setString(1, existingStock.getName());
 	        statement.setInt(2, existingStock.getQuantity());
 	        statement.setFloat(3, existingStock.getPrice());
-	        statement.setLong(4, existingStock.getStockId());
+	        statement.setFloat(4, existingStock.getAmount());
+	        statement.setLong(5, existingStock.getStockId());
 	        
 	        int rowsUpdated = statement.executeUpdate();
 	        if (rowsUpdated > 0) {
