@@ -77,6 +77,13 @@ public class InvoiceApi {
 	public List<InvoiceAndStockDataResponse> getInvoiceWithStockDetails(){
 		return InvoiceService.getInvoiceWithStockDetails(); 
 	}
+	// Getting Valid Centers 
+	@GET
+	@Path("/validateCenters")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<String> getValidCenters(){
+		return InvoiceService.getValidCenters(); 
+	}
 	// Soft Deleting Function
 	@PUT
 	@Path("softDelete/{id}")

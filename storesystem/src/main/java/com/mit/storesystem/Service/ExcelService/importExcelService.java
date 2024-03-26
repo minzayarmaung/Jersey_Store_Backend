@@ -44,6 +44,10 @@ public class importExcelService {
 				System.out.println("Skipping Data with Invoice ID : " + invoiceRequest.getInvoiceId());
 				continue;
 			}
+			if(InvoiceService.getValidCenters().contains(invoiceRequest.getCenter())) {
+				System.out.println("Skipping Invalid Center : " + invoiceRequest.getInvoiceId());
+				continue;
+			}
 			
 			StockRequest stockRequest = readStock(row , invoiceRequest);
 			

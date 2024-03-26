@@ -240,4 +240,14 @@ public class InvoiceService {
 		}
 		return response;
 	}
+
+	public static List<String> getValidCenters() {
+        String[] centers = {"Hleden Center", "City Mall", "Junction Square", "Junction City", "Ga Mhone Pwint Center"};
+        List<String> centerList = new ArrayList<>();
+        for(String center : centers) {
+        	centerList.add(center);
+        }
+        return centerList; 
+        // Figured out Another way : return Array.asList(centers);
+	}
 }
