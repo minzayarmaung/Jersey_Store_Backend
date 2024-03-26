@@ -30,10 +30,14 @@ public class PaginationService {
 				response.setStockId(result.getLong("stock_id"));
 				response.setName(result.getString("name"));
 				response.setAmount(result.getFloat("amount"));
+				
+				list.add(response);
+				
 			} int totalCount = PaginationService.getTotalItemCount(searchValue);
 			  int totalPages = PaginationService.calculateTotalPages(totalCount , limit);
 			  
-			  return list;
+			  
+			  return list; 
 		}
 	}
 	
@@ -46,7 +50,7 @@ public class PaginationService {
 		String searchCondition = "";
 		
 		if(searchValue != null && !searchValue.isEmpty()) {
-			searchCondition = " WHERE i.invoice_id Like ? OR i.cashier_name LIKE ?";
+			searchCondition = " WHERE i.invoice_id LIKE ? OR i.cashier_name LIKE ?";
 		}
 		
 		String finalQuery = baseQuery + searchCondition + " ORDER BY i.invoice_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";

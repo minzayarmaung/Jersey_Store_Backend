@@ -8,13 +8,15 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.mit.storesystem.Entity.ExportDTO;
+import com.mit.storesystem.Entity.InvoiceAndStockDataResponse;
+import com.mit.storesystem.Entity.PaginationResponse;
 
 public class ExcelService {
 	
 	// Export Excel 
-	public static Workbook exportExcelData(List<ExportDTO> invoiceAndStockData) {
+	public static Workbook exportExcelData(List<InvoiceAndStockDataResponse> invoiceAndStockData) {
 		
-		Collections.sort(invoiceAndStockData, Comparator.comparing(ExportDTO::getInvoiceId));
+		Collections.sort(invoiceAndStockData, Comparator.comparing(InvoiceAndStockDataResponse  ::getInvoiceId));
 		
 	    Workbook workbook = new XSSFWorkbook();
 	    
@@ -26,7 +28,7 @@ public class ExcelService {
 	    createHeaderRow(sheet, headers);
 
 	    int rowNum = 1;
-	    for (ExportDTO data : invoiceAndStockData) {
+	    for (InvoiceAndStockDataResponse data : invoiceAndStockData) {
 	        Row row = sheet.createRow(rowNum++);
 	        populateRowWithExportDTO(row, data);
 	    }
@@ -40,7 +42,7 @@ public class ExcelService {
             headerRow.createCell(i).setCellValue(headers[i]);
         }
     }
-    private static void populateRowWithExportDTO(Row row, ExportDTO data) {
+    private static void populateRowWithExportDTO(Row row, InvoiceAndStockDataResponse data) {
     		
     	if(data.getInvoiceId() != null) {
     	row.createCell(0).setCellValue(data.getInvoiceId());
@@ -53,9 +55,9 @@ public class ExcelService {
         row.createCell(3).setCellValue(data.getTime());
         row.createCell(4).setCellValue(data.getBranch());
         row.createCell(5).setCellValue(data.getCenter());
-        row.createCell(6).setCellValue(data.getStockName());
-        row.createCell(7).setCellValue(data.getStockPrice());
-        row.createCell(8).setCellValue(data.getStockQuantity());
+        row.createCell(6).setCellValue(data.getName());
+        row.createCell(7).setCellValue(data.getPrice());
+        row.createCell(8).setCellValue(data.getQuantity());
         row.createCell(9).setCellValue(data.getAmount());
     } 
     
