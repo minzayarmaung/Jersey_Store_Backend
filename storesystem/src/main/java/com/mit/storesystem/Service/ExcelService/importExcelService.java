@@ -41,11 +41,12 @@ public class importExcelService {
 			InvoiceRequest invoiceRequest = readInvoice(row);
 			
 			if(InvoiceService.getAllInvoiceIdsFromDatabase().contains(invoiceRequest.getInvoiceId())) {
-				System.out.println("Skipping Data with Invoice ID : " + invoiceRequest.getInvoiceId());
+				System.out.println("Skipping Data with Already Contained Invoice ID : " + invoiceRequest.getInvoiceId());
 				continue;
 			}
-			if(InvoiceService.getValidCenters().contains(invoiceRequest.getCenter())) {
-				System.out.println("Skipping Invalid Center : " + invoiceRequest.getInvoiceId());
+			if(!InvoiceService.getValidCenters().contains(invoiceRequest.getCenter())) {
+				System.out.println("Skipping Invalid Centers with Invoice ID : " + invoiceRequest.getInvoiceId() + 
+						" with Invalid Centers : " + invoiceRequest.getBranch());
 				continue;
 			}
 			
